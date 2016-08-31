@@ -26,7 +26,7 @@ This directory of directories contains entries for each lab, and (hopefully) a b
 
 #####Assignments:
 
-  * Currently empty.
+  * [Assignment1 - burrow, python, and accounts](Assignments/assignment1/Assignment\ 1.pdf)
 
 [[Return to Top]](#info-i427-introduction-to-search-informatics)
 
