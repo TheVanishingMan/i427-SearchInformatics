@@ -27,7 +27,7 @@ This directory of directories contains entries for each lab, and (hopefully) a b
 #####Assignments:
 
   * [Assignment1 - burrow, python, and accounts](Assignments/assignment1/Assignment\ 1.pdf)
-
+  * Assignment1 - HackerRank (not all included here): [[Problem1]](Assignments/assignment1/problem1.py) [[Problem2]](Assignments/assignment1/problem2.py) [[Problem3]](Assignments/assignment1/problem3.py) [[Problem4]](Assignments/assignment1/problem4.py)
 [[Return to Top]](#info-i427-introduction-to-search-informatics)
 
 ---
