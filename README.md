@@ -19,8 +19,7 @@ This repository contains all code written for I427.  Questions?  Contact Alexand
 This directory of directories contains entries for each lab, and (hopefully) a brief overview of what happened that week.
 
   * [Lab1 - Introduction to Python, hackerrank, and anaconda](Labs/Lab1)
-  * [Lab2 - Introduction to git, GitHub, and more Python](Labs/Lab2)
-    [[Easy]](Labs/Lab2/week2-easy.py)[[Medium-1]](Labs/Lab2/week2-medium-1.py)[[Medium-2]](Labs/Lab2/week2-medium-2.py)[[Medium-3]](Labs/Lab2/week2-medium-3.py)[[Difficult]](Labs/Lab2/week2-difficult.py)
+  * [Lab2 - Introduction to git, GitHub, and more Python](Labs/Lab2) | [[Easy]](Labs/Lab2/week2-easy.py)[[Medium-1]](Labs/Lab2/week2-medium-1.py)[[Medium-2]](Labs/Lab2/week2-medium-2.py)[[Medium-3]](Labs/Lab2/week2-medium-3.py)[[Difficult]](Labs/Lab2/week2-difficult.py)
   * Lab3 - Discuss Assignment 2, NLTK, String and Text
 
 [[Return to Top]](#info-i427-introduction-to-search-informatics)
