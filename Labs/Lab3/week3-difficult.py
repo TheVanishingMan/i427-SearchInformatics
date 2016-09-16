@@ -1,3 +1,6 @@
+# Question: Sherlock and the Valid String
+# Link: https://www.hackerrank.com/challenges/sherlock-and-valid-string
+
 # Enter your code here. Read input from STDIN. Print output to STDOUT
 
 def valid(str): #takes an input as a string
