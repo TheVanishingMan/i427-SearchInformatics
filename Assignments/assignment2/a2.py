@@ -23,13 +23,13 @@ def numberOfLetters(ls):
 #to return an array where the first element is numLetters
 #and the second element is numSentences.
 
-#I might still change this so I can go: 'parseForLettersAndSentences.letters'
+#I might still change this so I can go: 'parseForLettersAndSentences.letters()'
 def parseForLettersAndSentences(ls):
     letters = 0
     sentences = 0
-    for word in ls:
-        letters += len(word)
-        if '.' in word:
+    for word in ls: #previously this loop was executed twice (across two functions)
+        letters += len(word) #short term we go from O(2n) --> O(n)
+        if '.' in word: #speedup will only be apparent as number of documents grows.
             sentences += 1
     return [letters, sentences]
 
