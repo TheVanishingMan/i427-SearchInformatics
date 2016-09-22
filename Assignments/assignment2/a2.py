@@ -13,9 +13,11 @@ def parseForLettersAndSentences(ls):
     return [letters, sentences]
 
 def parseForVowelsAndDipthongs(ls):
+    vowel_set = 'aeiou'
     vowels = 0
     dipthongs = 0
     for word in ls:
+        previous_letter = '@' #basically saying it's null the first time, fix this soon
         for letter in word.lower():
             condA = letter=='a'
             condE = letter=='e'
@@ -24,7 +26,11 @@ def parseForVowelsAndDipthongs(ls):
             condU = letter=='u'
             if condA or condE or condI or condO or condU:
                 vowels += 1
-    return vowels
+                if previous_letter in vowel_set:
+                    #print [letter, previous_letter]
+                    dipthongs += 1
+            previous_letter = letter
+    return [vowels, dipthongs]
 
 # this can be changed into a loop through the directory
 # refer to https://github.iu.edu/hayesall/STARAI-financial-nlp/extractFinancialLines.py
@@ -45,9 +51,12 @@ if number_of_words==0: #in case of emergency, prevent divide by zero errors
     number_of_words = 1
 coleman_liau = (5.88*number_of_letters/number_of_words)-(29.6*number_of_sentences/number_of_words)-15.8
 
+vowels_and_dipthongs = parseForVowelsAndDipthongs(split_document_string)
+number_of_vowels = vowels_and_dipthongs[0]
+number_of_dipthongs = vowels_and_dipthongs[1]
+number_of_syllables = number_of_vowels - number_of_dipthongs
 
-number_of_vowels = parseForVowelsAndDipthongs(split_document_string)
-
+flesch_kincaid = (0.39*number_of_words/number_of_sentences)+(11.8*number_of_syllables/number_of_words)-15.59
 
 
 #Return values
@@ -59,6 +68,9 @@ print "  Number of words:     " + str(number_of_words)
 print "  Number of sentences: " + str(number_of_sentences)
 print "  CL level:            " + str(coleman_liau)
 print "  Vowels:              " + str(number_of_vowels)
+print "  Dipthongs:           " + str(number_of_dipthongs)
+print "  Syllables~:          " + str(number_of_syllables)
+print "  FK Score:            " + str(flesch_kincaid)
 
 #print testoutput
 #print "Document " + str(input_file) + " is " + str(number_of_words) + " words long."
