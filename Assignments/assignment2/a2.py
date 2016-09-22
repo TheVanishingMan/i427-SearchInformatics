@@ -1,3 +1,7 @@
+# This can be changed to loop through the contents of a directory.
+# refer to https://github.iu.edu/hayesall/STARAI-financial-nlp/extractFinancialLines.py
+# for now I'll handle the interface with some shell scripts, I think it's generally easier to read.
+
 # IMPORTANT:
 # run the file with: `python2.7 a2.py test.txt`
 import nltk, os, sys
@@ -6,9 +10,9 @@ def parseForLSVD(ls): #letters, sentences, vowels, and dipthongs
     letters, sentences, vowels, dipthongs = 0,0,0,0
     vowel_set = 'aeiou'
     for word in ls:
-        previous_letter = '@'
-        letters += len(word)
-        if '.' in word:
+        previous_letter = '@' # It doesn't really matter what this character is at the beginning of the loop.
+        letters += len(word)  # The only thing that really matters is that it is not a vowel, and that it gets reset
+        if '.' in word:       # each time we begin a new word.
             sentences += 1
         for letter in word.lower():
             condA = letter=='a'
@@ -23,9 +27,6 @@ def parseForLSVD(ls): #letters, sentences, vowels, and dipthongs
             previous_letter = letter
     return [letters, sentences, vowels, dipthongs]
 
-# this can be changed into a loop through the directory
-# refer to https://github.iu.edu/hayesall/STARAI-financial-nlp/extractFinancialLines.py
-# code I've written there has some really useful features that can be implemented here.
 input_file = sys.argv[1]
 f = open(input_file, 'r')
 document_string = f.read().splitlines()
@@ -38,12 +39,16 @@ number_of_sentences = LSVD[1]
 
 if number_of_words==0: #in case of emergency, prevent divide by zero errors
     number_of_words = 1
+    print "POSSIBLE ERROR"
 coleman_liau = (5.88*number_of_letters/number_of_words)-(29.6*number_of_sentences/number_of_words)-15.8
 
 number_of_vowels = LSVD[2]
 number_of_dipthongs = LSVD[3]
 number_of_syllables = number_of_vowels - number_of_dipthongs
 
+if number_of_sentences==0:
+    number_of_sentences = 1
+    print "POSSIBLE ERROR"
 flesch_kincaid = (0.39*number_of_words/number_of_sentences)+(11.8*number_of_syllables/number_of_words)-15.59
 
 
