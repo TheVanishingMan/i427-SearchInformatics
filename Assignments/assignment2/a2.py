@@ -9,26 +9,33 @@
 
 import nltk, os, sys
 
-# letters can be improved with the predicate 'isLetter()'
 def parseForLSVD(ls): #letters, sentences, vowels, and dipthongs
-    letters, sentences, vowels, dipthongs = 0,0,0,0
+    letters, sentences, vowels, dipthongs = 0,0,0,0 #sentences starts at 1 because it cannot count the first sentence.
     vowel_set = 'aeiou'
+    end_of_a_sentence = True # the first sentence is the end of a sentence.
     for word in ls:
-        previous_letter = '@' # It doesn't really matter what this character is at the beginning of the loop.
-        letters += len(word)  # The only thing that really matters is that it is not a vowel, and that it gets reset
-        if '.' in word:       # each time we begin a new word.
+        vowels_in_word = 0
+        previous_letter = '@' # It doesn't really matter what this character is at the beginning of the loop, as long as it is not a vowel.
+        letters += len(word) # consider stripping punctuation
+        if end_of_a_sentence and word[0].isupper():
             sentences += 1
-        for letter in word.lower(): # still needs a check for if the word ends in 'e'
-            condA = letter=='a' # http://stackoverflow.com/questions/19954593/python-checking-a-strings-first-and-last-character
-            condE = letter=='e' # create a separate variable for handling vowels in an individual word (dependent on where the vowels are).
+            end_of_a_sentence = False #there could be an issue in weird cases: 'cruellest month. breeding lilacs...'
+        if word.endswith('.') or word.endswith('!') or word.endswith('?'):
+            end_of_a_sentence = True # this is the end of a sentence
+        for letter in word.lower():
+            condA = letter=='a'
+            condE = letter=='e'
             condI = letter=='i'
             condO = letter=='o'
             condU = letter=='u'
             if condA or condE or condI or condO or condU:
-                vowels += 1
+                vowels_in_word += 1
                 if previous_letter in vowel_set:
                     dipthongs += 1
             previous_letter = letter
+        if vowels_in_word > 1 and word.endswith('e'): #if word has more than 1 vowel ends in 'e'
+            vowels_in_word = vowels_in_word - 1 # subtract 1
+        vowels += vowels_in_word # vowels_in_word is added to the total number of vowels
     return [letters, sentences, vowels, dipthongs]
 
 
