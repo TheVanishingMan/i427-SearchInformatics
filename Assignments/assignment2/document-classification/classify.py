@@ -129,6 +129,7 @@ print " "
 print "The document's category is most likely: " + mostLikely
 print " "
 print "The most informative words in this document were:"
+#print mostUseful
 ind = 0
 for item in most_useful_keys:
     print ' - ' + ''.join(item) + ':   ' + str(most_useful_values[ind])

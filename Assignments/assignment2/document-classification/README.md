@@ -67,3 +67,5 @@ bash makeOneLine.sh business-words.txt > TEMPO.tmp && mv TEMPO.tmp business-word
 [hayesall@tank testing-set]$ for file in *.txt; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp > TEMPI.tmp && mv TEMPI.tmp $file && rm -f TEMPO.tmp; done
 
 # `wc -l *.txt` should produce 1 for every file.
+
+# Now that my testing and training data was set up, I just needed to write the classifier.
