@@ -16,9 +16,9 @@ for file in *.txt; do cp $file ../all-documents/tech-$file; done
 
 It would also be nice if all words were stored on a single line (for easier scraping):
 
+Get all words in .txt files onto one line (for easier scraping)
 
-# all-documents/ : get all words in .txt files onto one line (for easier scraping)
-for file in *.txt; do echo $file && TEMP=`cat $file` && echo $TEMP > TEMPO.tmp && mv TEMPO.tmp $file; done
+`for file in *.txt; do echo $file && TEMP=`cat $file` && echo $TEMP > TEMPO.tmp && mv TEMPO.tmp $file; done`
 
 #####Step 2:
 
@@ -69,25 +69,19 @@ Now we need to build a great training set with all of the words from each type o
 
 Preprocess all of the documents from their respective categories (remove all punctuation so we are just left with the lower case versions of all of the words separated by spaces).  Repeat for entertainment, tech, sports, and politics.
 
-```bash
-for file in training-set/business-*; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp >> business-words.txt && rm -f TEMPO.tmp; done
-```
+`for file in training-set/business-*; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp >> business-words.txt && rm -f TEMPO.tmp; done`
 
 But we forgot something! After using this method to extract all of the words, everything is on different lines again!
 
 Luckily we can use the same trick on the same file (then if we do `wc -l business-words.txt` we will see everything is on 1 line)
 
-```bash
-bash makeOneLine.sh business-words.txt > TEMPO.tmp && mv TEMPO.tmp business-words.txt
-```
+`bash makeOneLine.sh business-words.txt > TEMPO.tmp && mv TEMPO.tmp business-words.txt`
 
 #####Step 4:
 
 To be fair we need to do the same thing for all the files in the testing set:
 
-```bash
-for file in *.txt; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp > TEMPI.tmp && mv TEMPI.tmp $file && rm -f TEMPO.tmp; done
-```
+`for file in *.txt; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp > TEMPI.tmp && mv TEMPI.tmp $file && rm -f TEMPO.tmp; done`
 
 `wc -l *.txt` should produce 1 for every file.
 
