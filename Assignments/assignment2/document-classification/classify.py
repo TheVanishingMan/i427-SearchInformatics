@@ -43,37 +43,22 @@ tech_likely_words = {}
 sport_likely_words = {}
 politics_likely_words = {}
 
+def countAndLog(query, ls):
+    total = ls.count(query)
+    if total > 0:
+        return math.log(total)
+    else:
+        return 0
+
 for word in input_document_list:
+
+    # count how many times the word appears in a certain type of document, then take the logarithm if number isn't zero
+    log_business_score = countAndLog(word, split_business_string)
+    log_entertainment_score = countAndLog(word, split_entertainment_string)
+    log_tech_score = countAndLog(word, split_tech_string)
+    log_sport_score = countAndLog(word, split_sport_string)
+    log_politics_score = countAndLog(word, split_politics_string)
     
-    # count how many times the word appears in a certain type of document
-    tech_score = split_tech_string.count(word)
-    sport_score = split_sport_string.count(word)
-    business_score = split_business_string.count(word)
-    entertainment_score = split_entertainment_string.count(word)
-    politics_score = split_politics_string.count(word)
-
-    # calculate the logarithm of each of these scores (we don't want to log(0))
-    if tech_score == 0:
-        log_tech_score = 0
-    else:
-        log_tech_score = math.log(tech_score)
-    if sport_score == 0:
-        log_sport_score = 0
-    else:
-        log_sport_score = math.log(sport_score)
-    if business_score == 0:
-        log_business_score = 0
-    else:
-        log_business_score = math.log(business_score)
-    if entertainment_score == 0:
-        log_entertainment_score = 0
-    else:
-        log_entertainment_score = math.log(entertainment_score)
-    if politics_score == 0:
-        log_politics_score = 0
-    else:
-        log_politics_score = math.log(politics_score)
-
     # Calculate the the amount to change each category by:
     business_delta = log_business_score - log_entertainment_score - log_politics_score - log_tech_score - log_sport_score
     entertainment_delta = log_entertainment_score - log_politics_score - log_tech_score - log_sport_score - log_business_score
