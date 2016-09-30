@@ -1,22 +1,36 @@
-# Alexander L. Hayes: bash commands for splitting and creating test and training sets.
+####Alexander L. Hayes / Document Classification
 
-# create a single training set of 2225 files; each command starts from the file of origin (i.e. run business in the business/ directory)
+Using a combination of python and bash scripts
+
+#####Step 1:
+
+Create a single training set of 2225 files; each command starts from the file of origin (i.e. run business in the business/ directory)
+
+```bash
 for file in *.txt; do cp $file ../all-documents/business-$file; done
 for file in *.txt; do cp $file ../all-documents/entertainment-$file; done
 for file in *.txt; do cp $file ../all-documents/politics-$file; done
 for file in *.txt; do cp $file ../all-documents/sport-$file; done
 for file in *.txt; do cp $file ../all-documents/tech-$file; done
+```
+
+It would also be nice if all words were stored on a single line (for easier scraping):
+
 
 # all-documents/ : get all words in .txt files onto one line (for easier scraping)
 for file in *.txt; do echo $file && TEMP=`cat $file` && echo $TEMP > TEMPO.tmp && mv TEMPO.tmp $file; done
 
-# randomly split files into training and test set (70% 30%):
-(all-documents/ contains a randomsplit.sh script, run with 'bash randomsplit.sh' while in the all-documents directory)
-#randomsplit.sh function:
+#####Step 2:
+
+Randomly split files into training and test sets (70% 30%):
+
+Run with 'bash randomsplit.sh' while in the all-documents directory (I've moved files around for easier viewing).
 
 
-```
+```bash
 #!/bin/bash
+
+# Quick highlight of the randomsplit.sh code
 
 function generate_random_number {
     number=$RANDOM
@@ -49,23 +63,34 @@ echo "$TOTALTRUE documents added to the training set"
 echo "$TOTALFALSE documents added to the test set"
 ```
 
-# Now we need to build a great training set with all of the words from each type of document (sports, tech, politics, etc.)
-# Preprocess all of the documents from their respective categories (remove all punctuation so we are just left with the lower-
-# case versions of all of the words separated by spaces).
+#####Step 3:
 
+Now we need to build a great training set with all of the words from each type of document (sports, tech, politics, etc.)
+
+Preprocess all of the documents from their respective categories (remove all punctuation so we are just left with the lower case versions of all of the words separated by spaces).  Repeat for entertainment, tech, sports, and politics.
+
+```bash
 for file in training-set/business-*; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp >> business-words.txt && rm -f TEMPO.tmp; done
+```
 
-# (repeat for entertainment, tech, sports, and politics)
+But we forgot something! After using this method to extract all of the words, everything is on different lines again!
 
-# But we forgot something! After using this method to extract all of the words, everything is on different lines again!
-# Luckily we can use the same trick on the same file (then if we do `wc -l business-words.txt` we will see everything is on 1 line)
+Luckily we can use the same trick on the same file (then if we do `wc -l business-words.txt` we will see everything is on 1 line)
 
+```bash
 bash makeOneLine.sh business-words.txt > TEMPO.tmp && mv TEMPO.tmp business-words.txt
+```
 
-# To be fair we need to do the same thing for all the files in the testing set:
+#####Step 4:
 
-[hayesall@tank testing-set]$ for file in *.txt; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp > TEMPI.tmp && mv TEMPI.tmp $file && rm -f TEMPO.tmp; done
+To be fair we need to do the same thing for all the files in the testing set:
 
-# `wc -l *.txt` should produce 1 for every file.
+```bash
+for file in *.txt; do echo $file && bash makeOneLine.sh $file > TEMPO.tmp && python preprocess.py TEMPO.tmp > TEMPI.tmp && mv TEMPI.tmp $file && rm -f TEMPO.tmp; done
+```
 
-# Now that my testing and training data was set up, I just needed to write the classifier.
+`wc -l *.txt` should produce 1 for every file.
+
+#####Step 5:
+
+Now that testing and training data is set up, we can run the classifier.  It looks for tech-words.txt, etc. in the same directory as it is run in.
