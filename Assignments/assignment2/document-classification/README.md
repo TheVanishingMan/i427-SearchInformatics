@@ -88,3 +88,5 @@ To be fair we need to do the same thing for all the files in the testing set:
 #####Step 5:
 
 Now that testing and training data is set up, we can run the classifier.  It looks for tech-words.txt, etc. in the same directory as it is run in.
+
+`python classify.py testing-set/tech-118.txt`
