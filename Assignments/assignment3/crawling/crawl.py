@@ -2,7 +2,8 @@
 import urllib2
 import sys
 import time as t
-from BeautifulSoup import BeautifulSoup as bs
+#from BeautifulSoup import BeautifulSoup as bs
+from bs4 import BeautifulSoup as bs
 
 seed = sys.argv[1] #http://www.cnn.com
 maximum_pages = int(sys.argv[2]) #200
