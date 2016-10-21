@@ -34,3 +34,5 @@ I'd mostly used it to extract text, and was aware that BeautifulSoup wasn't perf
 On top of that, there were other errors that I had to build in exception protection from: URLError in urllib2 and a UnicodeEncodeError showed up in a few cases. .pdf files caused some issues.
 
 There was also one interesting error that I only encountered once: the script got [stuck inside of Facebook on a page warning the user that it was leaving Facebook](https://www.facebook.com/l.php?u=http%3A%2F%2Fmomentsapp.com%2F&h=HAQFLyA38&s=1), but every time it followed a link Facebook generated a new page with php, creating an infinite loop that depth-first search kept trying to dig deeper into. When I investigated the site it seemed to be some kind of advertisement for an app.
+
+It's probably worth mentioning that my crawler did not take robots.txt into account, to compensate I only ran the script on my local machine through my home WiFi. The speed at which it was even possible to make requests was a bottleneck that kept it well below one page per second though.
