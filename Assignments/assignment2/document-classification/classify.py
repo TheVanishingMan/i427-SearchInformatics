@@ -104,18 +104,19 @@ else: #mostLikely == 'politics'
 most_useful_keys = mostUseful.keys()
 most_useful_values = mostUseful.values()
 
-print "Score for category:"
-print " - business:      " + str(business_category_score)
-print " - entertainment: " + str(entertainment_category_score)
-print " - tech:          " + str(tech_category_score)
-print " - sport          " + str(sport_category_score)
-print " - politics:      " + str(politics_category_score)
-print " "
-print "The document's category is most likely: " + mostLikely
-print " "
-print "The most informative words in this document were:"
+#print "Score for category:"
+#print " - business:      " + str(business_category_score)
+#print " - entertainment: " + str(entertainment_category_score)
+#print " - tech:          " + str(tech_category_score)
+#print " - sport          " + str(sport_category_score)
+#print " - politics:      " + str(politics_category_score)
+#print " "
+#print "The document's category is most likely: " + mostLikely
+print mostLikely
+#print " "
+#print "The most informative words in this document were:"
 #print mostUseful
-ind = 0
-for item in most_useful_keys:
-    print ' - ' + ''.join(item) + ':   ' + str(most_useful_values[ind])
-    ind += 1
+#ind = 0
+#for item in most_useful_keys:
+#    print ' - ' + ''.join(item) + ':   ' + str(most_useful_values[ind])
+#    ind += 1
