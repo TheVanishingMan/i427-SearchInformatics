@@ -1,4 +1,5 @@
 import sys
+import nltk
 
 #accumulator = 0
 
@@ -7,9 +8,6 @@ import sys
 arg_list = []
 for arg in sys.argv[1:]:
     arg_list.append(arg)
-
-def main():
-    pass
 
 def input_test():
     if len(arg_list) < 2:
@@ -24,6 +22,10 @@ def input_test():
         print "\033[1;32mMode is valid.\033[0m"
 
 input_test()
+
+sentence = "Hello my name is Elder Price"
+tokens = nltk.word_tokenize(sentence)
+print tokens
 # mode options:
 #  - or:   return pages that have any of the keywords
 #  - and:  return pages that have all of the keywords
@@ -37,7 +39,6 @@ def test_var_args(f_arg, *argv):
 #test_var_args('yasoob', 'python', 'eggs', 'toast', 'bacon')
 #test_var_args(arg_list)
 
-if __name__ == '__main__': main()
 print arg_list
 print "the mode:", arg_list[0]
 arg_list = arg_list[1:]
