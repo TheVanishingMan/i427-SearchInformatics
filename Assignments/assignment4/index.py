@@ -1,4 +1,5 @@
 import sys, os
+import time as t
 
 # ******************************************************
 # *    Step 0: unit tests to ensure inputs are valid   *
@@ -72,6 +73,7 @@ def visible(element):
 dictionary_of_words_to_files = {}
 
 def populate_dictionary_from_files(path_to_html_file):
+    #global dictionary_of_words_to_files
     if os.path.isfile(path_to_html_file):
         print "\033[1;32mFile and the path to it are valid.\033[m"
     else:
@@ -104,17 +106,39 @@ def populate_dictionary_from_files(path_to_html_file):
 
     print "Title:  " + title
     print "Length: " + str(len(stemmed_words))
-    list_of_words = []
+    current_file = path_to_html_file.split('/')[1]
     for item in stemmed_words:
-        #print str(item),
-        list_of_words.append(str(item))
-    
-    #for item in output:
-    print list_of_words
-
+        word = str(item)
+        if dictionary_of_words_to_files.has_key(word):
+            temporary_string = dictionary_of_words_to_files[word].split()
+            temporary_string_length = len(temporary_string)
+            files_found = []
+            for i in range(0, temporary_string_length):
+                files_found.append(temporary_string[i].split(':')[0])
+                if temporary_string[i].split(':')[0] == current_file:
+                    new_number = int(temporary_string[i].split(':')[1]) + 1
+                    new_entry = current_file + ':' + str(new_number)
+                    del temporary_string[i]
+                    temporary_string.append(new_entry)
+                    #update the dictionary
+                    update = ' '.join(temporary_string)
+                    dictionary_of_words_to_files[word] = update
+                    break
+            if current_file not in files_found:
+                update = ' '.join(temporary_string) + ' ' + current_file + ':1'
+                dictionary_of_words_to_files[word] = update
+        else:
+            new_entry = current_file + ':1 '
+            dictionary_of_words_to_files[word] = new_entry
+            
 for line in index_file:
     print "File:  " + line.split()[0]
     print "Link:  " + line.split()[1]
     path_to_follow = directory + line.split()[0]
     populate_dictionary_from_files(path_to_follow)
     
+#print dictionary_of_words_to_files.keys()
+with open("invindex.dat","a") as inverted_index:
+    for key in dictionary_of_words_to_files:
+        inverted_index.write(key + " % " + dictionary_of_words_to_files[key]+"\n")
+
