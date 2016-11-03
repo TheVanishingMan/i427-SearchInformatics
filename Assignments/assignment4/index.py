@@ -40,15 +40,13 @@ def input_test():
 input_test()
 print "\n\033[1;32mAll tests passed successfully!\033[0m"
 
-print directory
-print index
-print path_to_file
+#print directory
+#print index
+#print path_to_file
 
 with open(path_to_file) as file_to_read:
-    html_file = file_to_read.readlines()
-
-for line in html_file:
-    print line.split()
+    index_file = file_to_read.readlines()
+#0: 1.html; 1: link
 
 import re, string, nltk
 from bs4 import BeautifulSoup
@@ -60,15 +58,6 @@ from nltk.stem.porter import *
 # http://stackoverflow.com/questions/8689795/how-can-i-remove-non-ascii-characters-but-leave-periods-and-spaces-using-python
 # http://stackoverflow.com/questions/5486337/how-to-remove-stop-words-using-nltk-or-python
 # http://www.nltk.org/howto/stem.html
-'''
-html_file = sys.argv[1]
-html_file = open(html_file).read()
-doc = html_file.replace('&nbsp;', ' ')
-doc = doc.replace('\n', ' ')
-#soup = BeautifulSoup(doc, 'html.parser')
-soup = BeautifulSoup(doc, 'lxml')
-data = soup.findAll(text=True)
-title = ""
 
 def visible(element):
     if element.parent.name in ['title']:
@@ -80,22 +69,52 @@ def visible(element):
         return False
     return True
 
-visible_text = filter(visible, data)
-printable = set(string.printable)
-new_word = ""
+dictionary_of_words_to_files = {}
 
-for item in visible_text:
-    for letter in item:
-        if letter in printable:
-            new_word = new_word + letter.lower()
+def populate_dictionary_from_files(path_to_html_file):
+    if os.path.isfile(path_to_html_file):
+        print "\033[1;32mFile and the path to it are valid.\033[m"
+    else:
+        print "\033[0;31m -- Error: either the path is incorrect, the file is incorrect, or both.\033[m"
+        print "\033[0;31m --        Tried to access a file at: " + path_to_html_file + "\033[m"
+        exit()
+    html_file = path_to_html_file
+    html_file = open(html_file).read()
+    doc = html_file.replace('&nbsp;', ' ')
+    doc = doc.replace('\n', ' ')
+    #soup = BeautifulSoup(doc, 'html.parser')
+    soup = BeautifulSoup(doc, 'lxml')
+    data = soup.findAll(text=True)
+    global title
+    title = ""
 
-word_list = nltk.word_tokenize(new_word)
-filtered_words = [word for word in word_list if word not in stopwords.words('english')]
-stemmer = PorterStemmer()
-stemmed_words = [stemmer.stem(word) for word in filtered_words]
+    visible_text = filter(visible, data)
+    printable = set(string.printable)
+    new_word = ""
+    
+    for item in visible_text:
+        for letter in item:
+            if letter in printable:
+                new_word = new_word + letter.lower()
 
-print "Title:  " + title
-print "Length: " + str(len(stemmed_words))
-for item in stemmed_words:
-    print item,
-'''
+    word_list = nltk.word_tokenize(new_word)
+    filtered_words = [word for word in word_list if word not in stopwords.words('english')]
+    stemmer = PorterStemmer()
+    stemmed_words = [stemmer.stem(word) for word in filtered_words]
+
+    print "Title:  " + title
+    print "Length: " + str(len(stemmed_words))
+    list_of_words = []
+    for item in stemmed_words:
+        #print str(item),
+        list_of_words.append(str(item))
+    
+    #for item in output:
+    print list_of_words
+
+for line in index_file:
+    print "File:  " + line.split()[0]
+    print "Link:  " + line.split()[1]
+    path_to_follow = directory + line.split()[0]
+    populate_dictionary_from_files(path_to_follow)
+    
