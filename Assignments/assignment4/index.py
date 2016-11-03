@@ -2,6 +2,9 @@ import sys, os
 import time as t
 
 #Run program with: `python index.py pages/ index.dat`
+#I recommend to delete invindex.dat and docs.dat before running this program (I append instead of writing).
+# rm -f invindex.dat
+# rm -f docs.dat
 
 # ******************************************************
 # *    Step 0: unit tests to ensure inputs are valid   *
@@ -47,6 +50,10 @@ print "\n\033[1;32mAll tests passed successfully!\033[0m"
 #print index
 #print path_to_file
 
+# ******************************************************
+# *  Step 1: read from pages/index.dat and parse html  *
+# ******************************************************
+
 with open(path_to_file) as file_to_read:
     index_file = file_to_read.readlines()
 #0: 1.html; 1: link
@@ -75,7 +82,6 @@ def visible(element):
 dictionary_of_words_to_files = {}
 
 def populate_dictionary_from_files(path_to_html_file):
-    #global dictionary_of_words_to_files
     if os.path.isfile(path_to_html_file):
         print "\033[1;32mFile and the path to it are valid.\033[m"
     else:
@@ -87,6 +93,7 @@ def populate_dictionary_from_files(path_to_html_file):
     doc = html_file.replace('&nbsp;', ' ')
     doc = doc.replace('\n', ' ')
     #soup = BeautifulSoup(doc, 'html.parser')
+    # using lxml instead of html parser seems like it works better
     soup = BeautifulSoup(doc, 'lxml')
     data = soup.findAll(text=True)
     global title, length_of_stemmed_words
@@ -134,6 +141,10 @@ def populate_dictionary_from_files(path_to_html_file):
         else:
             new_entry = current_file + ':1 '
             dictionary_of_words_to_files[word] = new_entry
+
+# ******************************************************
+# *   Step 2: populate a dictionary with information   *
+# ******************************************************
             
 for line in index_file:
     file_to_print = str(line.split()[0])
