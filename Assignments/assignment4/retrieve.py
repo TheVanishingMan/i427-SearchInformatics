@@ -31,12 +31,14 @@ input_test()
 
 # ******************************************************
 # *      Step 1: import and parse the documents        *
+# *             docs.dat and invindex.dat              *
 # ******************************************************
 
 import os
 import nltk
 from bs4 import BeautifulSoup as bs
 
+'''
 total_files = 0
 #change the pages directory a variable input
 for file_name in os.listdir('pages'):
@@ -44,9 +46,12 @@ for file_name in os.listdir('pages'):
         total_files += 1
 
 print total_files
+'''
+
 sentence = "Hello my name is Elder Price"
 tokens = nltk.word_tokenize(sentence)
 print tokens
+
 # mode options:
 #  - or:   return pages that have any of the keywords
 #  - and:  return pages that have all of the keywords
