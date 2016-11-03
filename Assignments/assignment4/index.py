@@ -1,6 +1,8 @@
 import sys, os
 import time as t
 
+#Run program with: `python index.py pages/ index.dat`
+
 # ******************************************************
 # *    Step 0: unit tests to ensure inputs are valid   *
 # * At the top so that other imports won't interfere.  *
@@ -134,10 +136,6 @@ def populate_dictionary_from_files(path_to_html_file):
             dictionary_of_words_to_files[word] = new_entry
             
 for line in index_file:
-#    print "File:  " + line.split()[0]
-#    print "Link:  " + line.split()[1]
-#    print "Title:  " + title
-#    print "Length: " + length_of_stemmed_words
     file_to_print = str(line.split()[0])
     link_to_print = str(line.split()[1])
     path_to_follow = directory + line.split()[0]
@@ -145,7 +143,7 @@ for line in index_file:
     populate_dictionary_from_files(path_to_follow)
     with open("docs.dat","a") as documents_data:
         # file, length, title, url
-        documents_data.write(file_to_print + ' ' + length_of_stemmed_words + ' "' + title.replace(' ', '_') + '" ' + link_to_print + '\n')
+        documents_data.write(file_to_print + ' ' + length_of_stemmed_words + ' "' + title.replace(' ', '_').replace('"',"") + '" ' + link_to_print + '\n')
     
 #print dictionary_of_words_to_files.keys()
 with open("invindex.dat","a") as inverted_index:
