@@ -87,8 +87,9 @@ def populate_dictionary_from_files(path_to_html_file):
     #soup = BeautifulSoup(doc, 'html.parser')
     soup = BeautifulSoup(doc, 'lxml')
     data = soup.findAll(text=True)
-    global title
+    global title, length_of_stemmed_words
     title = ""
+    length_of_stemmed_words = ""
 
     visible_text = filter(visible, data)
     printable = set(string.printable)
@@ -103,9 +104,10 @@ def populate_dictionary_from_files(path_to_html_file):
     filtered_words = [word for word in word_list if word not in stopwords.words('english')]
     stemmer = PorterStemmer()
     stemmed_words = [stemmer.stem(word) for word in filtered_words]
-
-    print "Title:  " + title
-    print "Length: " + str(len(stemmed_words))
+    length_of_stemmed_words = str(len(stemmed_words))
+    
+    #print "Title:  " + title
+    #print "Length: " + length_of_stemmed_words
     current_file = path_to_html_file.split('/')[1]
     for item in stemmed_words:
         word = str(item)
@@ -132,10 +134,18 @@ def populate_dictionary_from_files(path_to_html_file):
             dictionary_of_words_to_files[word] = new_entry
             
 for line in index_file:
-    print "File:  " + line.split()[0]
-    print "Link:  " + line.split()[1]
+#    print "File:  " + line.split()[0]
+#    print "Link:  " + line.split()[1]
+#    print "Title:  " + title
+#    print "Length: " + length_of_stemmed_words
+    file_to_print = str(line.split()[0])
+    link_to_print = str(line.split()[1])
     path_to_follow = directory + line.split()[0]
+    print path_to_follow
     populate_dictionary_from_files(path_to_follow)
+    with open("docs.dat","a") as documents_data:
+        # file, length, title, url
+        documents_data.write(file_to_print + ' ' + length_of_stemmed_words + ' "' + title.replace(' ', '_') + '" ' + link_to_print + '\n')
     
 #print dictionary_of_words_to_files.keys()
 with open("invindex.dat","a") as inverted_index:
