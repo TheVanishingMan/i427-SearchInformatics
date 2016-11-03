@@ -37,6 +37,13 @@ import os
 import nltk
 from bs4 import BeautifulSoup as bs
 
+total_files = 0
+#change the pages directory a variable input
+for file_name in os.listdir('pages'):
+    if '.html' in file_name:
+        total_files += 1
+
+print total_files
 sentence = "Hello my name is Elder Price"
 tokens = nltk.word_tokenize(sentence)
 print tokens
