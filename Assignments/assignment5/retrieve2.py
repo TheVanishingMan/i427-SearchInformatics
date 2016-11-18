@@ -35,6 +35,7 @@ input_test()
 # ******************************************************
 
 import nltk
+import operator
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
 
@@ -74,34 +75,63 @@ for line in document_data_list:
 documents_explored = 0
 
 most_dict = {}
+frequency_dict = {}
 for html_doc in document_data_dict.keys():
     for word in list_of_word_strings:
         if inverted_index_dict.has_key(word):
+            #text_list: all of the documents that match a certain word
             text_list = inverted_index_dict[word].split()
+            term_frequency = 0
+            #total number of times a word occurs in all of the documents
+            for item in text_list:
+                head, sep, tail = item.partition(':')
+                term_frequency += int(tail)
+#            print text_list
+#            print term_frequency
             for item in text_list:
                 documents_explored += 1
+                #head is the docID (42.html), sep is the separator (':'), tail is the term frequency (3)
                 head, sep, tail = item.partition(':')
+                tail = float(tail)
                 if head == html_doc:
                     if most_dict.has_key(head):
                         most_dict[head] += 1
                     else:
                         most_dict[head] = 1
+                    if frequency_dict.has_key(head):
+                        frequency_dict[head] += (tail/term_frequency)
+                    else:
+                        frequency_dict[head] = (tail/term_frequency)
+
 # "selecting elements of python dictionary greater than a certain value"
 stripped_most_dict = dict((k, v) for k, v in most_dict.items() if v >= int(math.ceil(len(list_of_word_strings)/2)))
-fixed_list = []
-for key in stripped_most_dict:
-    #print key
-    fixed_list.append(key)
+sorted_frequency_dict = sorted(frequency_dict.items(), key=operator.itemgetter(1))
+sorted_frequency_dict.reverse()
+#print sorted_frequency_dict
 
+fixed_list = []
+current = 0
+maximum = 25
+for item in sorted_frequency_dict:
+    if item[0] in stripped_most_dict:
+        if current >= 25:
+            break
+        else:
+            fixed_list.append(item[0])
+            current += 1
+
+#print current
 #print most_dict
 #    print fixed_list
 #    print len(fixed_list)
-int_to_print = 1
+total_found = 0
 print "\033[1;32m\n\nSuper-Google Results:\033[0m"
 for item in fixed_list:
     final_list = document_data_dict[item].split()
     url_to_print = final_list[2]
     title_to_print = final_list[1]
-    print '  ' + str(int_to_print) + ') ' + url_to_print + '  -----  ' + title_to_print.replace('_',' ')
-    int_to_print += 1
-print "Explored " + str(documents_explored) + " documents and found " + str(int_to_print-1) + " results."
+    frequency_to_print = "{0:.3f}".format(float(frequency_dict[item]))
+    print '  ' + str(frequency_to_print) + ') ' + url_to_print + '  -----  ' + title_to_print.replace('_',' ')
+    total_found += 1
+
+print "Explored " + str(documents_explored) + " documents and found " + str(total_found) + " results."
